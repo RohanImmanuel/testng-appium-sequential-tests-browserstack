@@ -1,9 +1,8 @@
-package com.browserstack.run_local_test;
+package com.browserstack.run_sequential_tests;
 import com.browserstack.local.Local;
 
 import java.net.URL;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.io.FileReader;
 import org.json.simple.JSONObject;
@@ -14,19 +13,29 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.AfterSuite;
 
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import io.appium.java_client.MobileBy;
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.ios.IOSElement;
 
+import java.io.*;
+
 
 public class BrowserStackTestNGTest {
-  public IOSDriver<IOSElement> driver;
-  private Local local;
+  private static IOSDriver<IOSElement> driver;
+  public static JavascriptExecutor jse;
 
-  @BeforeMethod(alwaysRun=true)
+  @BeforeSuite
   public void setUp() throws Exception {
+    System.out.println("Setting Up Driver");
     JSONParser parser = new JSONParser();
-    JSONObject config = (JSONObject) parser.parse(new FileReader("src/test/resources/com/browserstack/run_local_test/local.conf.json"));
+    JSONObject config = (JSONObject) parser.parse(new FileReader("src/test/resources/com/browserstack/run_sequential_tests/sequential.conf.json"));
     JSONArray envs = (JSONArray) config.get("environments");
 
     DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -37,7 +46,7 @@ public class BrowserStackTestNGTest {
       Map.Entry pair = (Map.Entry)it.next();
       capabilities.setCapability(pair.getKey().toString(), pair.getValue().toString());
     }
-    
+
     Map<String, String> commonCapabilities = (Map<String, String>) config.get("capabilities");
     it = commonCapabilities.entrySet().iterator();
     while (it.hasNext()) {
@@ -56,27 +65,21 @@ public class BrowserStackTestNGTest {
     if(accessKey == null) {
       accessKey = (String) config.get("access_key");
     }
-    
+
     String app = System.getenv("BROWSERSTACK_APP_ID");
     if(app != null && !app.isEmpty()) {
       capabilities.setCapability("app", app);
     }
 
-    if(capabilities.getCapability("browserstack.local") != null && capabilities.getCapability("browserstack.local") == "true"){
-      local = new Local();
-      Map<String, String> options = new HashMap<String, String>();
-      options.put("key", accessKey);
-      local.start(options);
-    }
-
     driver = new IOSDriver<IOSElement>(new URL("http://"+username+":"+accessKey+"@"+config.get("server")+"/wd/hub"), capabilities);
+    jse = (JavascriptExecutor)driver;
   }
 
-  @AfterMethod(alwaysRun=true)
+  @AfterSuite
   public void tearDown() throws Exception {
-    // Invoke driver.quit() to indicate that the test is completed. 
+    System.out.println("Driver Quit");
+    // Invoke driver.quit() to indicate that the test is completed.
     // Otherwise, it will appear as timed out on BrowserStack.
     driver.quit();
-    if(local != null) local.stop();
   }
 }
