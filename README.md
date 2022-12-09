@@ -20,14 +20,6 @@ This repository demonstrates how to run Appium tests in [TestNG](http://testng.o
 
 ### Install the dependencies
 
-To install the dependencies for Android tests, run :
-```sh
-cd android/testng-examples
-mvn clean
-```
-
-Or,
-
 To install the dependencies for iOS tests, run :
 
 ```sh
@@ -39,32 +31,25 @@ mvn clean
 
 Getting Started with Appium tests in TestNg on BrowserStack couldn't be easier!
 
-### **Run first test :**
+### Running your tests
 
-- Switch to `run_first_test` directory under [Android examples](android/testng-examples) or [iOS examples](ios/testng-examples)
-- Follow the steps outlined in the documentation - [Get Started with your first test on App Automate](https://www.browserstack.com/docs/app-automate/appium/getting-started/java/testng)
+- To run a single test, run `mvn test -P sequential`
 
-### **Speed up test execution with parallel testing :**
+ Understand how many parallel sessions you need by using our [Parallel Test Calculator](https://www.browserstack.com/app-automate/parallel-calculator?ref=github)
 
-- Switch to `run_parallel_test` directory under [Android examples](android/testng-examples/) or [iOS examples](ios/testng-examples/)
-- Follow the steps outlined in the documentation - [Get Started with parallel testing on App Automate](https://www.browserstack.com/docs/app-automate/appium/getting-started/java/testng/parallelize-tests)
 
-### **Use Local testing for apps that access resources hosted in development or testing environments :**
+## Notes
+* You can view your test results on the [BrowserStack Automate dashboard](https://www.browserstack.com/app-automate)
+* You can export the environment variables for the Username and Access Key of your BrowserStack account
 
-- Switch to `run_local_test` directory under [Android examples](android/testng-examples/) or [iOS examples](ios/testng-examples/)
-- Follow the steps outlined in the documentation - [Get Started with Local testing on App Automate](https://www.browserstack.com/docs/app-automate/appium/getting-started/java/testng/local-testing)
+  ```
+  export BROWSERSTACK_USERNAME=<browserstack-username> &&
+  export BROWSERSTACK_ACCESS_KEY=<browserstack-access-key> &&
+  export BROWSERSTACK_APP_ID=<browserstack-app-id>
+  ```
 
-**Note**: If you are facing any issues, refer [Getting Help section](#Getting-Help)
-
-## Integration with other Java frameworks
-
-For other Java frameworks samples, refer to following repositories :
-
-- [JUnit](https://github.com/browserstack/junit-appium-app-browserstack)
-- [Java](https://github.com/browserstack/java-appium-app-browserstack)
-
-Note: For other test frameworks supported by App-Automate refer our [Developer documentation](https://www.browserstack.com/docs/)
-
-## Getting Help
-
-If you are running into any issues or have any queries, please check [Browserstack Support page](https://www.browserstack.com/support/app-automate) or [get in touch with us](https://www.browserstack.com/contact?ref=help).
+## Additional Resources
+* [Documentation for writing Automate test scripts in Java](https://www.browserstack.com/app-automate/java)
+* [Customizing your tests on BrowserStack](https://www.browserstack.com/app-automate/capabilities)
+* [Browsers & mobile devices for selenium testing on BrowserStack](https://www.browserstack.com/list-of-browsers-and-platforms?product=app-automate)
+* [Using REST API to access information about your tests via the command-line interface](https://www.browserstack.com/app-automate/rest-api)
